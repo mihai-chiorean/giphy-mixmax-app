@@ -2,9 +2,14 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var cors = require('cors');
+var morgan = require('morgan');
+
 
 // Serve assets in /public.
 app.use(express.static(__dirname + '/public'));
+
+// log some requests
+app.use(morgan('dev'));
 
 // So we can POST.
 app.use(bodyParser.urlencoded());
@@ -20,7 +25,6 @@ app.get('/editor', function(req, res) {
   res.sendFile(__dirname + '/editor.html');
 });
 
-// The in-email representation.
-app.post('/api/resolver', cors(corsOptions), require('./api/resolver'));
+app.get('/api/hub', cors(corsOptions), require('./api/hub'));
 
 app.listen(process.env.PORT || 8910);
